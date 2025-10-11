@@ -4,7 +4,7 @@
 	"version": "3.2026.0",
 	"scripts": {
 		"check": "tsc --noEmit",
-		"prepack": "tsup && publint",
+		"prepack": "tsdown && publint",
 		"preversion": "node --test",
 		"version": "node src/write.ts && git add -A public",
 		"postversion": "git push && git push --tags && node cli/postversion.ts",
@@ -14,7 +14,7 @@
 		"@types/node": "^24.7.1",
 		"prettier": "^3.6.2",
 		"publint": "^0.3.14",
-		"tsup": "^8.5.0",
+		"tsdown": "^0.15.6",
 		"typescript": "^5.9.3",
 		"valibot": "^1.1.0"
 	},

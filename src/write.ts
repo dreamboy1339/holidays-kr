@@ -1,23 +1,29 @@
 import { createHash } from 'node:crypto';
-import { createWriteStream, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { createWriteStream, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import * as prettier from 'prettier';
 import * as anniversaries from './anniversaries/all.ts';
 import * as holidays from './holidays/all.ts';
 import type { Presets } from './types.ts';
 
-rmSync('./public', { recursive: true, force: true });
-mkdirSync('./public/anniversaries', { recursive: true });
+const rootDir = join(import.meta.dirname, '..');
+if (!existsSync(join(rootDir, 'package.json'))) throw new Error();
+
+rmSync(join(rootDir, './public'), { recursive: true, force: true });
+mkdirSync(join(rootDir, './public/anniversaries'), { recursive: true });
 
 write('대한민국의 공휴일', 'holidays', holidays);
 write('대한민국의 기념일', 'anniversaries', anniversaries);
 
 async function write(calendarName: string, type: 'holidays' | 'anniversaries', presets: Presets) {
-	const outputDirectory = type === 'holidays' ? './public' : `./public/${type}`;
+	const baseDir =
+		type === 'holidays' //
+			? join(rootDir, './public')
+			: join(rootDir, './public/anniversaries');
 
 	for await (const [key, value] of Object.entries(presets)) {
 		writeFileSync(
-			join(outputDirectory, `${key.slice(1)}.json`),
+			join(baseDir, `${key.slice(1)}.json`),
 			await prettier.format(JSON.stringify(value), {
 				parser: 'json',
 				useTabs: true,
@@ -26,7 +32,7 @@ async function write(calendarName: string, type: 'holidays' | 'anniversaries', p
 	}
 
 	writeFileSync(
-		join(outputDirectory, 'basic.json'),
+		join(baseDir, 'basic.json'),
 		await prettier.format(JSON.stringify(presets).replaceAll(/y(\d{4})/g, '$1'), {
 			parser: 'json',
 			useTabs: true,
@@ -44,7 +50,7 @@ async function write(calendarName: string, type: 'holidays' | 'anniversaries', p
 		dtStamp: new Date().toISOString().replace(/-|:/g, '').substring(0, 15) + 'Z',
 	};
 
-	const basicIcsStream = createWriteStream(`${outputDirectory}/basic.ics`, 'utf8');
+	const basicIcsStream = createWriteStream(join(baseDir, 'basic.ics'), 'utf8');
 	basicIcsStream.write(ics.header);
 
 	for (const [key, preset] of Object.entries(presets)) {
@@ -52,7 +58,7 @@ async function write(calendarName: string, type: 'holidays' | 'anniversaries', p
 		if (!preset) throw new TypeError();
 
 		// CSV
-		const csvStream = createWriteStream(`${outputDirectory}/${year}.csv`, 'utf8');
+		const csvStream = createWriteStream(join(baseDir, `${year}.csv`), 'utf8');
 		csvStream.write('\ufeff' + 'Start date,Subject\n');
 		for (const [dateString, subjects] of Object.entries(preset)) {
 			if (!subjects) throw new TypeError();
@@ -63,7 +69,7 @@ async function write(calendarName: string, type: 'holidays' | 'anniversaries', p
 		csvStream.end();
 
 		// ICS
-		const icsStream = createWriteStream(`${outputDirectory}/${year}.ics`, 'utf8');
+		const icsStream = createWriteStream(join(baseDir, `${year}.ics`), 'utf8');
 		icsStream.write(ics.header);
 		for (const [dateString, subjects] of Object.entries(preset)) {
 			if (!subjects) throw new TypeError();

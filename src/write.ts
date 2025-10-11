@@ -1,13 +1,7 @@
 import { createHash } from 'node:crypto';
-import {
-	copyFileSync,
-	createWriteStream,
-	globSync,
-	mkdirSync,
-	rmSync,
-	writeFileSync,
-} from 'node:fs';
-import { basename } from 'node:path';
+import { createWriteStream, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import * as prettier from 'prettier';
 import * as anniversaries from './anniversaries/all.ts';
 import * as holidays from './holidays/all.ts';
 import type { Presets } from './types.ts';
@@ -18,18 +12,25 @@ mkdirSync('./public/anniversaries', { recursive: true });
 write('대한민국의 공휴일', 'holidays', holidays);
 write('대한민국의 기념일', 'anniversaries', anniversaries);
 
-function write(calendarName: string, type: 'holidays' | 'anniversaries', presets: Presets) {
+async function write(calendarName: string, type: 'holidays' | 'anniversaries', presets: Presets) {
 	const outputDirectory = type === 'holidays' ? './public' : `./public/${type}`;
 
-	for (const path of globSync(`./src/${type}/*.json`)) {
-		const filename = basename(path);
-		copyFileSync(path, `${outputDirectory}/${filename}`);
+	for await (const [key, value] of Object.entries(presets)) {
+		writeFileSync(
+			join(outputDirectory, `${key.slice(1)}.json`),
+			await prettier.format(JSON.stringify(value), {
+				parser: 'json',
+				useTabs: true,
+			}),
+		);
 	}
 
 	writeFileSync(
-		`${outputDirectory}/basic.json`,
-		JSON.stringify(presets).replaceAll(/y(\d{4})/g, '$1'),
-		'utf8',
+		join(outputDirectory, 'basic.json'),
+		await prettier.format(JSON.stringify(presets).replaceAll(/y(\d{4})/g, '$1'), {
+			parser: 'json',
+			useTabs: true,
+		}),
 	);
 
 	const ics = {

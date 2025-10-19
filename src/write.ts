@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto';
 import { createWriteStream, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import * as prettier from 'prettier';
-import * as anniversaries from './anniversaries/all.ts';
-import * as holidays from './holidays/all.ts';
+import * as anniversaries from './anniversaries.ts';
+import * as holidays from './holidays.ts';
 import type { Presets } from './types.ts';
 
 const rootDir = join(import.meta.dirname, '..');

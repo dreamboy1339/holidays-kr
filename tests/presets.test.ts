@@ -1,7 +1,7 @@
 import { equal } from 'node:assert/strict';
 import test from 'node:test';
-import * as all from '../src/holidays/all.ts';
-import * as latest from '../src/holidays/latest.ts';
+import * as latest from '../src/holidays.latest.ts';
+import * as all from '../src/holidays.ts';
 
 const year = new Date().getUTCFullYear();
 const month = new Date().getUTCMonth() + 1;

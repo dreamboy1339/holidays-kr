@@ -1,5 +1,5 @@
-import * as all from './holidays/all.ts';
-import * as latest from './holidays/latest.ts';
+import * as latest from './holidays.latest.ts';
+import * as all from './holidays.ts';
 import type { Presets } from './types.ts';
 
 const createFn = (presets: Presets) => (date: Date) => {
@@ -11,7 +11,7 @@ const createFn = (presets: Presets) => (date: Date) => {
 	return preset[dateString] || null;
 };
 
-export * from './holidays/all.ts';
+export * from './holidays.ts';
 export const getHolidayNames = createFn(latest);
 export const getHolidayNamesE = createFn(all);
 export const isHoliday = (date: Date) => !!getHolidayNames(date);

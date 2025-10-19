@@ -1,7 +1,7 @@
 import assert, { doesNotThrow, equal } from 'node:assert/strict';
 import test from 'node:test';
 import { parse } from 'valibot';
-import * as presets from '../src/holidays/all.ts';
+import * as presets from '../src/holidays.ts';
 import type { Preset } from '../src/types.ts';
 import { createSolarHolidays, lunarHolidaySubjects } from './holidays.ts';
 import {

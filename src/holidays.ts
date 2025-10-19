@@ -1,3 +1,5 @@
+import type { ValidateHolidays } from './holidays.check.ts';
+
 export const y2026 = {
 	'2026-01-01': ['1월 1일'],
 	'2026-02-16': ['설날 전날'],
@@ -21,6 +23,8 @@ export const y2026 = {
 	'2026-12-25': ['기독탄신일'],
 } as const;
 
+y2026 satisfies ValidateHolidays<2026, typeof y2026>;
+
 export const y2025 = {
 	'2025-01-01': ['1월 1일'],
 	'2025-01-27': ['임시공휴일'],
@@ -42,6 +46,8 @@ export const y2025 = {
 	'2025-10-09': ['한글날'],
 	'2025-12-25': ['기독탄신일'],
 } as const;
+
+y2025 satisfies ValidateHolidays<2025, typeof y2025>;
 
 export const y2024 = {
 	'2024-01-01': ['1월 1일'],
@@ -65,6 +71,8 @@ export const y2024 = {
 	'2024-12-25': ['기독탄신일'],
 } as const;
 
+y2024 satisfies ValidateHolidays<2024, typeof y2024>;
+
 export const y2023 = {
 	'2023-01-01': ['1월 1일'],
 	'2023-01-21': ['설날 전날'],
@@ -85,6 +93,8 @@ export const y2023 = {
 	'2023-10-09': ['한글날'],
 	'2023-12-25': ['기독탄신일'],
 } as const;
+
+y2023 satisfies ValidateHolidays<2023, typeof y2023>;
 
 export const y2022 = {
 	'2022-01-01': ['1월 1일'],
@@ -108,6 +118,8 @@ export const y2022 = {
 	'2022-12-25': ['기독탄신일'],
 } as const;
 
+y2022 satisfies ValidateHolidays<2022, typeof y2022>;
+
 export const y2021 = {
 	'2021-01-01': ['1월 1일'],
 	'2021-02-11': ['설날 전날'],
@@ -128,6 +140,8 @@ export const y2021 = {
 	'2021-10-11': ['대체공휴일(한글날)'],
 	'2021-12-25': ['기독탄신일'],
 } as const;
+
+y2021 satisfies ValidateHolidays<2021, typeof y2021>;
 
 export const y2020 = {
 	'2020-01-01': ['1월 1일'],
@@ -150,6 +164,8 @@ export const y2020 = {
 	'2020-12-25': ['기독탄신일'],
 } as const;
 
+y2020 satisfies ValidateHolidays<2020, typeof y2020>;
+
 export const y2019 = {
 	'2019-01-01': ['1월 1일'],
 	'2019-02-04': ['설날 전날'],
@@ -168,6 +184,8 @@ export const y2019 = {
 	'2019-10-09': ['한글날'],
 	'2019-12-25': ['기독탄신일'],
 } as const;
+
+y2019 satisfies ValidateHolidays<2019, typeof y2019>;
 
 export const y2018 = {
 	'2018-01-01': ['1월 1일'],
@@ -189,3 +207,5 @@ export const y2018 = {
 	'2018-10-09': ['한글날'],
 	'2018-12-25': ['기독탄신일'],
 } as const;
+
+y2018 satisfies ValidateHolidays<2018, typeof y2018>;
